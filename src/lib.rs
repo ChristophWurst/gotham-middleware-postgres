@@ -66,13 +66,14 @@ impl PostgresMiddlewareData {
         }
     }
 
-    pub fn connect<CB>(
+    pub fn connect<CB, R>(
         &self,
         handle: &Handle,
         cb: CB,
-    ) -> Box<Future<Item = (), Error = tokio_postgres::Error>>
+    ) -> Box<Future<Item = R, Error = tokio_postgres::Error>>
     where
-        CB: FnOnce(Connection) -> Box<Future<Item = (), Error = tokio_postgres::Error>> + 'static,
+        CB: FnOnce(Connection) -> Box<Future<Item = R, Error = tokio_postgres::Error>> + 'static,
+        R: 'static,
     {
         let connect = Connection::connect(self.database.as_str(), TlsMode::None, handle);
 

@@ -8,7 +8,7 @@ extern crate tokio_core;
 
 use std::error::Error;
 
-use futures::future::{self, Future};
+use futures::Future;
 use gotham::handler::HandlerFuture;
 use gotham::http::response::create_response;
 use gotham::pipeline::new_pipeline;
@@ -36,14 +36,14 @@ pub fn say_hello(state: State) -> Box<HandlerFuture> {
                         println!("result: {}", row.get::<i32, usize>(0 as usize));
                     })
                 })
-                .and_then(|_| Ok(()))
+                .and_then(|_| Ok("Hello, Postgres!".to_owned()))
                 .map_err(|(err, _)| err);
 
             Box::new(f)
         })
     }.then(|res| {
         let text = match res {
-            Ok(_) => format!("Hello, Postgres"),
+            Ok(text) => text,
             Err(err) => format!("Error: {}", err.description()),
         };
 
