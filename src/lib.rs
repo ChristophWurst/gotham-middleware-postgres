@@ -59,6 +59,15 @@ pub struct PostgresMiddlewareData {
     database: String,
 }
 
+impl Clone for PostgresMiddlewareData {
+    fn clone(&self) -> Self {
+        PostgresMiddlewareData {
+            handle: AssertUnwindSafe(self.handle.clone()),
+            database: self.database.clone(),
+        }
+    }
+}
+
 impl PostgresMiddlewareData {
     pub fn new<S>(handle: Remote, database: S) -> Self
     where

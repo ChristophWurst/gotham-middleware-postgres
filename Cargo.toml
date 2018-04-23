@@ -1,6 +1,6 @@
 [package]
 name = "gotham-middleware-postgres"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Christoph Wurst <christoph@winzerhof-wurst.at>"]
 
 [dependencies]
