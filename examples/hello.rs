@@ -19,14 +19,12 @@ use gotham::state::{FromState, State};
 use gotham_middleware_postgres::{PostgresMiddleware, PostgresMiddlewareData};
 use hyper::StatusCode;
 use futures_state_stream::StateStream;
-use tokio_core::reactor::Handle;
 
 pub fn say_hello(state: State) -> Box<HandlerFuture> {
     let f = {
-        let handle = Handle::borrow_from(&state);
         let postgres = PostgresMiddlewareData::borrow_from(&state);
 
-        postgres.connect(handle, |connection| {
+        postgres.connect(|connection| {
             println!("connected to postgres db");
 
             let f = connection
