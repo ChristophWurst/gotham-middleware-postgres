@@ -3,9 +3,12 @@ extern crate futures_state_stream;
 extern crate gotham;
 extern crate gotham_middleware_postgres;
 extern crate hyper;
+#[macro_use]
+extern crate log;
 extern crate mime;
 extern crate tokio_core;
 
+use std::env;
 use std::error::Error;
 
 use futures::Future;
@@ -25,13 +28,13 @@ pub fn say_hello(state: State) -> Box<HandlerFuture> {
         let postgres = PostgresMiddlewareData::borrow_from(&state);
 
         postgres.connect(|connection| {
-            println!("connected to postgres db");
+            debug!("connected to postgres db");
 
             let f = connection
                 .prepare("SELECT 1")
                 .and_then(|(select, connection)| {
                     connection.query(&select, &[]).for_each(|row| {
-                        println!("result: {}", row.get::<i32, usize>(0 as usize));
+                        debug!("result: {}", row.get::<i32, usize>(0 as usize));
                     })
                 })
                 .and_then(|_| Ok("Hello, Postgres!".to_owned()))
@@ -75,5 +78,5 @@ fn router() -> Router {
 pub fn main() {
     let addr = "127.0.0.1:7878";
     println!("Listening for requests at http://{}", addr);
-    gotham::start(addr, router())
+    gotham::start_with_num_threads(addr, 8, router())
 }

@@ -13,4 +13,5 @@ tokio-postgres = "0.3.0"
 [dev-dependencies]
 futures-state-stream = "*"
 hyper = "*"
+log = "*"
 mime = "*"
