@@ -78,5 +78,5 @@ fn router() -> Router {
 pub fn main() {
     let addr = "127.0.0.1:7878";
     println!("Listening for requests at http://{}", addr);
-    gotham::start_with_num_threads(addr, 8, router())
+    gotham::start_with_num_threads(addr, env::args().nth(1).unwrap().parse().unwrap(), router())
 }
