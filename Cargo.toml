@@ -4,7 +4,7 @@ version = "0.3.0"
 authors = ["Christoph Wurst <christoph@winzerhof-wurst.at>"]
 
 [dependencies]
-futures = "0.1"
+futures = "0.2"
 gotham = "0.2"
 gotham_derive = "0.2"
 tokio-core = "*"
